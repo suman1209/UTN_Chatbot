@@ -1,0 +1,25 @@
+task: "train" # 'train', 'evaluate'
+data_configs:
+  train_path: "datasets/utn_dataset_curated/part2/train"
+  val_path: "datasets/utn_dataset_curated/part2/val"
+  test_path: "datasets/utn_dataset_curated/part2/test"
+  shuffle: False
+  batch_size: 2
+model_configs:
+  name: "qwen_v1" #
+  save_checkpoint: False
+  resume_from_checkpoint: null # Training from Scratch
+  print_freq: 500 # every <print_freq> num of train steps, loss will be printed
+  epochs: 10
+  device: "cuda" # either "cpu" or "cuda"
+  optim:
+    name: SGD
+    lr: 0.001
+    momentum: 0.9
+    weight_decay: 0.0005
+    clip_grad: null
+
+task_configs:
+  debug: True # if True will display a lot of intermediate information for debugging purposes
+  log_expt: True # whether to log the experiment online or not
+  vocab_size: null

@@ -1,0 +1,8 @@
+name: captcha_env
+channels:
+  - conda-forge
+dependencies:
+  - pip
+  - pip:
+      - jupyter==1.1.1
+      - commitizen
