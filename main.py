@@ -18,16 +18,17 @@ def main(config_path) -> None:
     print("### Training Model ###")
 
     if configs.task == 'train':
-        # UTN_chat_bot.train(train_loader, val_loader)
+        UTN_chat_bot.train(dataset)
         pass
 
     elif configs.task == 'evaluate':
         # use the checkpoint to evaluate the model and get a score
         raise Exception(f'This is yet to be implemented!')
     elif configs.task == 'inference':
-        # UTN_chat_bot.inference("Hello")
+        responses = UTN_chat_bot.inference("Hello")
+        print(f"{responses=}")
         # use the checkpoint to generate responses
-        raise Exception(f'This is yet to be implemented!')
+        # raise Exception(f'This is yet to be implemented!')
 
     else:
         raise Exception(f'Undefined task! {configs.task}')

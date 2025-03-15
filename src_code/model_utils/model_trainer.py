@@ -56,15 +56,15 @@ class UTNChatBot():
             metric_for_best_model=self.config.metric_for_best_model,
         )
 
-    def train(self, train_dataset, eval_dataset):
+    def train(self, dataset):
         self.model.train()
         self._set_fine_tuning_parameters()
         # Trainer API
         self.trainer = Trainer(
             model=self.model,
             args=self.training_args,
-            train_dataset=train_dataset,
-            eval_dataset=eval_dataset,
+            train_dataset=dataset["train"],
+            eval_dataset=dataset["val"],
             tokenizer=self.tokenizer,
         )
 
