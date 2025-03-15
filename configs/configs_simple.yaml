@@ -1,6 +1,6 @@
 task: "train" # 'train', 'evaluate', 'inference'
 data_configs:
-  data_path: "/var/lit2425/jenga/suman/UTN_Chatbot/datasets/UTN Site Data.csv"
+  data_path: "./datasets/UTN Site Data.csv"
   shuffle: False
   batch_size: 2
 
@@ -15,7 +15,7 @@ model_configs:
   cache_dir: ./cache
 
 training_configs:
-  output_dir: ./outputs
+  output_dir: ./docs_and_results/checkpoints
   epochs: 10
   per_device_train_batch_size: 2
   gradient_accumulation_steps: 4

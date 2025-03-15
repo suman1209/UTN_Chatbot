@@ -4,7 +4,9 @@ from copy import deepcopy
 
 def dataset_generator(csv_path, shuffle=True, train_ratio=0.8, val_ratio=0.1):
     
-    sys_role="You are Qwen, created by Alibaba Cloud. You are a helpful assistant."
+    sys_role="You are BSMPD, created by UTN Boys.\
+     You are a helpful assistant for the students who \
+     want to learn about UTN's master coursers."
     train_list = []
     val_list = []
     test_list = []
