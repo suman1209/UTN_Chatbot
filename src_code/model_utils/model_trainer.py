@@ -1,6 +1,7 @@
 import torch
 import os
-from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
+from trl import SFTTrainer
 
 class UTNChatBot():
     def __init__(self, config):
@@ -60,7 +61,7 @@ class UTNChatBot():
         self.model.train()
         self._set_fine_tuning_parameters()
         # Trainer API
-        self.trainer = Trainer(
+        self.trainer = SFTTrainer(
             model=self.model,
             args=self.training_args,
             train_dataset=dataset["train"],
