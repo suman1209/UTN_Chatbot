@@ -5,15 +5,37 @@ data_configs:
   test_path: "datasets/utn_dataset_curated/part2/test"
   shuffle: False
   batch_size: 2
+
 model_configs:
-  name: "qwen_v1" #
+  name: "Qwen/Qwen2.5-0.5B-Instruct"
+  tokenizer_name: "Qwen/Qwen2.5-0.5B-Instruct"
+  checkpoint: null
+  tokenizer_checkpoint: null
   save_checkpoint: False
-  resume_from_checkpoint: null # Training from Scratch
-  print_freq: 500 # every <print_freq> num of train steps, loss will be printed
-  epochs: 10
   device: "cuda" # either "cpu" or "cuda"
+  device_map: { "": 0 }
+  cache_dir: ./cache
+
+training_configs:
+  output_dir: ./outputs
+  epochs: 10
+  per_device_train_batch_size: 2
+  gradient_accumulation_steps: 4
+  logging_steps: 0.01 # Log every X updates steps
+  logging_strategy: steps
+  save_steps: 0.1
+  max_steps: -1
+  warmup_ratio: 0.1
+  group_by_length: True
+  lr_scheduler_type: cosine
+  do_eval: True
+  eval_strategy: steps
+  eval_steps: 0.1
+  save_total_limit: 1
+  load_best_model_at_end: True
+  metric_for_best_model: eval_loss
   optim:
-    name: SGD
+    name: adamw_torch
     lr: 0.001
     momentum: 0.9
     weight_decay: 0.0005

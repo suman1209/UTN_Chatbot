@@ -6,3 +6,7 @@ dependencies:
   - pip:
       - jupyter==1.1.1
       - commitizen
+      - transformers
+      - torch
+      - numpy<2.0
+      - accelerate>=0.26.0

@@ -1,5 +1,6 @@
 from src_code.task_utils.config_parser import ConfigParser
 from src_code.data_utils.dataloader import get_dataloader
+from src_code.model_utils.model_trainer import UTNChatBot
 import sys
 
 def main(config_path) -> None:
@@ -12,14 +13,20 @@ def main(config_path) -> None:
     train_loader = None
     val_loader = None
     test_loader = None
+    UTN_chat_bot = UTNChatBot(configs)
 
     print("### Training Model ###")
 
     if configs.task == 'train':
+        # UTN_chat_bot.train(train_loader, val_loader)
         pass
 
     elif configs.task == 'evaluate':
         # use the checkpoint to evaluate the model and get a score
+        raise Exception(f'This is yet to be implemented!')
+    elif configs.task == 'inference':
+        # UTN_chat_bot.inference("Hello")
+        # use the checkpoint to generate responses
         raise Exception(f'This is yet to be implemented!')
 
     else:
