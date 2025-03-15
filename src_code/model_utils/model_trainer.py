@@ -71,7 +71,7 @@ class UTNChatBot():
 
         # Start training
         self.trainer.train()
-        self.trainer.save_model(self.config.output_dir)
+        self.trainer.save_model(os.path.join(self.config.output_dir, "checkpoint_final"))
 
     def inference(self, prompt):
         messages = [
