@@ -1,16 +1,14 @@
-task: "train" # 'train', 'evaluate'
+task: "train" # 'train', 'evaluate', 'inference'
 data_configs:
-  train_path: "datasets/utn_dataset_curated/part2/train"
-  val_path: "datasets/utn_dataset_curated/part2/val"
-  test_path: "datasets/utn_dataset_curated/part2/test"
+  data_path: "/var/lit2425/jenga/suman/UTN_Chatbot/datasets/UTN Site Data.csv"
   shuffle: False
   batch_size: 2
 
 model_configs:
   name: "Qwen/Qwen2.5-0.5B-Instruct"
   tokenizer_name: "Qwen/Qwen2.5-0.5B-Instruct"
-  checkpoint: null
-  tokenizer_checkpoint: null
+  checkpoint: ''
+  tokenizer_checkpoint: ''
   save_checkpoint: False
   device: "cuda" # either "cpu" or "cuda"
   device_map: { "": 0 }

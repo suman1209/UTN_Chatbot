@@ -1,5 +1,5 @@
 from src_code.task_utils.config_parser import ConfigParser
-from src_code.data_utils.dataloader import get_dataloader
+from src_code.data_utils.dataset import dataset_generator
 from src_code.model_utils.model_trainer import UTNChatBot
 import sys
 
@@ -9,26 +9,21 @@ def main(config_path) -> None:
     print(f"{configs.batch_size = }")
 
     print("### Creating Dataloaders ###")
-    get_dataloader()
-    train_loader = None
-    val_loader = None
-    test_loader = None
+    final_dataset = dataset_generator(configs.data_path)
     UTN_chat_bot = UTNChatBot(configs)
 
     print("### Training Model ###")
 
     if configs.task == 'train':
-        UTN_chat_bot.train(dataset)
-        pass
+        UTN_chat_bot.train(final_dataset)
 
     elif configs.task == 'evaluate':
         # use the checkpoint to evaluate the model and get a score
         raise Exception(f'This is yet to be implemented!')
+
     elif configs.task == 'inference':
         responses = UTN_chat_bot.inference("Hello")
         print(f"{responses=}")
-        # use the checkpoint to generate responses
-        # raise Exception(f'This is yet to be implemented!')
 
     else:
         raise Exception(f'Undefined task! {configs.task}')
