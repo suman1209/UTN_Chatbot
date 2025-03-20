@@ -12,9 +12,10 @@ def main(config_path) -> None:
     final_dataset = dataset_generator(configs.data_path)
     UTN_chat_bot = UTNChatBot(configs)
 
-    print("### Training Model ###")
+    
 
     if configs.task == 'train':
+        print("### Training Model ###")
         UTN_chat_bot.train(final_dataset)
 
     elif configs.task == 'evaluate':
@@ -25,6 +26,9 @@ def main(config_path) -> None:
         responses = UTN_chat_bot.inference("Hello")
         print(f"{responses=}")
 
+    elif configs.task == 'inference_full':
+        UTN_chat_bot.infer_batch(final_dataset)
+        
     else:
         raise Exception(f'Undefined task! {configs.task}')
 

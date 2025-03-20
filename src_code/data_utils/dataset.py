@@ -42,11 +42,11 @@ def dataset_generator(csv_path, shuffle=True, train_ratio=0.8, val_ratio=0.1):
     print(f"{len(train_lines) = }")
     for line in train_lines:
         line = line.strip()
-        if line == "":
+        line = line.split("\t")
+        if len(line) < 2:
             continue
-        line = line.split(",")
-        user_prompt = line[1]
-        results = line[2]
+        user_prompt = line[0]
+        results = line[1]
         message = deepcopy(message_temp)
         message["messages"][1]["content"] = user_prompt
         message["messages"][2]["content"] = results
@@ -57,9 +57,9 @@ def dataset_generator(csv_path, shuffle=True, train_ratio=0.8, val_ratio=0.1):
     # val data
     for line in val_lines:
         line = line.strip()
-        if line == "":
+        line = line.split("\t")
+        if len(line) < 2:
             continue
-        line = line.split(",")
         user_prompt = line[0]
         results = line[1]
         message = deepcopy(message_temp)
@@ -72,9 +72,10 @@ def dataset_generator(csv_path, shuffle=True, train_ratio=0.8, val_ratio=0.1):
     # test data
     for line in lines[train_size + val_size: ]:
         line = line.strip()
-        if line == "":
+        
+        line = line.split("\t")
+        if len(line) < 2:
             continue
-        line = line.split(",")
         user_prompt = line[0]
         results = line[1]
         message = deepcopy(message_temp)
