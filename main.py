@@ -16,7 +16,7 @@ def main(config_path) -> None:
 
     if configs.task == 'train':
         print("### Training Model ###")
-        UTN_chat_bot.train(final_dataset)
+        UTN_chat_bot.train(final_dataset, configs.plot)
 
     elif configs.task == 'evaluate':
         UTN_chat_bot.evaluate(final_dataset)

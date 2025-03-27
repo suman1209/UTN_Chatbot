@@ -13,3 +13,4 @@ dependencies:
       - trl<0.16
       - evaluate
       - rouge_score
+      - matplotlib
