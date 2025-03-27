@@ -19,8 +19,7 @@ def main(config_path) -> None:
         UTN_chat_bot.train(final_dataset)
 
     elif configs.task == 'evaluate':
-        # use the checkpoint to evaluate the model and get a score
-        raise Exception(f'This is yet to be implemented!')
+        UTN_chat_bot.evaluate(final_dataset)
 
     elif configs.task == 'inference':
         responses = UTN_chat_bot.inference("Hello")

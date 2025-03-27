@@ -4,5 +4,7 @@ transformers
 torch
 numpy<2.0
 accelerate>=0.26.0
-trl
+trl<0.16
 datasets
+evaluate
+rouge_score
