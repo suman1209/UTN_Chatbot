@@ -60,6 +60,8 @@ class UTNChatBot():
             save_total_limit=self.config.save_total_limit,
             load_best_model_at_end=self.config.load_best_model_at_end,
             metric_for_best_model=self.config.metric_for_best_model,
+            logging_dir=os.path.join(self.config.output_dir, "../logs"),
+            report_to="tensorboard"
         )
 
     def train(self, dataset, plot=True):

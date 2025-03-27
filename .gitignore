@@ -173,3 +173,4 @@ cython_debug/
 cache*
 datasets*
 *checkpoints*
+*logs*

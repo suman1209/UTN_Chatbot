@@ -9,3 +9,4 @@ datasets
 evaluate
 rouge_score
 matplotlib
+tensorboard
