@@ -1,16 +1,16 @@
-task: "train" # 'train', 'evaluate', 'inference', 'inference_full'
+task: "inference_full" # 'train', 'evaluate', 'inference', 'inference_full'
 data_configs:
   sys_role: "You are BSMPD, created by UTN Boys.\
      You are a helpful assistant for the students who \
      want to learn about UTN's master coursers."
-  data_path: "./datasets/LLM Project - Dataset.tsv"
+  data_path: "./datasets/LLM Project - UTN Site Data.tsv"
   shuffle: False
   batch_size: 2
 
 model_configs:
   name: "Qwen/Qwen2.5-0.5B-Instruct"
   tokenizer_name: "Qwen/Qwen2.5-0.5B-Instruct"
-  checkpoint: ''
+  checkpoint: './docs_and_results/checkpoints/checkpoint-6300'
   tokenizer_checkpoint: ''
   save_checkpoint: False
   device: "cuda" # either "cpu" or "cuda"

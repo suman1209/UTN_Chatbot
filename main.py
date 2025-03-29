@@ -11,7 +11,7 @@ def main(config_path) -> None:
     print("### Creating Dataloaders ###")
 
     final_dataset = dataset_generator(configs.data_path, configs.sys_role)
-    test_dataset = dataset_generator("./datasets/LLM Project - Test_Questions.tsv", train_ratio=0, val_ratio=0)
+    test_dataset = dataset_generator("./datasets/LLM Project - Test_Questions.tsv", configs.sys_role, train_ratio=0, val_ratio=0, shuffle=False)
 
     UTN_chat_bot = UTNChatBot(configs)
 
