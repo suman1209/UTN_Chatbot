@@ -4,7 +4,7 @@ data_configs:
      You are a helpful assistant for the students who \
      want to learn about UTN's master coursers."
   data_path: "./datasets/LLM Project - UTN Site Data.tsv"
-  shuffle: False
+  shuffle: True
   batch_size: 2
 
 model_configs:
@@ -20,7 +20,7 @@ model_configs:
 training_configs:
   output_dir: ./docs_and_results/checkpoints
   plot: True
-  epochs: 100
+  epochs: 10000
   per_device_train_batch_size: 2
   gradient_accumulation_steps: 4
   logging_steps: 0.01 # Log every X updates steps
