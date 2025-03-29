@@ -124,7 +124,7 @@ class UTNChatBot():
             writer = csv.writer(file, quoting=csv.QUOTE_ALL)
             # Write the data to the CSV file
             writer.writerows(data)
-        print("CSV file has been written successfully.")
+        print(f"CSV file has been written successfully to {self.config.output_dir}/output.csv.")
 
     def evaluate(self, dataset):
         bleu_metric = evaluate.load("bleu")

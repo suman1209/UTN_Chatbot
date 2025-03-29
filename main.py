@@ -9,7 +9,10 @@ def main(config_path) -> None:
     print(f"{configs.batch_size = }")
 
     print("### Creating Dataloaders ###")
+
     final_dataset = dataset_generator(configs.data_path, configs.sys_role)
+    test_dataset = dataset_generator("./datasets/LLM Project - Test_Questions.tsv", train_ratio=0, val_ratio=0)
+
     UTN_chat_bot = UTNChatBot(configs)
 
     
@@ -19,14 +22,14 @@ def main(config_path) -> None:
         UTN_chat_bot.train(final_dataset, configs.plot)
 
     elif configs.task == 'evaluate':
-        UTN_chat_bot.evaluate(final_dataset)
+        UTN_chat_bot.evaluate(test_dataset)
 
     elif configs.task == 'inference':
         responses = UTN_chat_bot.inference("Hello")
         print(f"{responses=}")
 
     elif configs.task == 'inference_full':
-        UTN_chat_bot.infer_batch(final_dataset)
+        UTN_chat_bot.infer_batch(test_dataset)
         
     else:
         raise Exception(f'Undefined task! {configs.task}')
