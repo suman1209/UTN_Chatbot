@@ -9,7 +9,7 @@ def main(config_path) -> None:
     print(f"{configs.batch_size = }")
 
     print("### Creating Dataloaders ###")
-    final_dataset = dataset_generator(configs.data_path)
+    final_dataset = dataset_generator(configs.data_path, configs.sys_role)
     UTN_chat_bot = UTNChatBot(configs)
 
     

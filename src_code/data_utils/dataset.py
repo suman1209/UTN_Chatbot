@@ -1,12 +1,10 @@
 from datasets import Dataset, DatasetDict
 from copy import deepcopy
+import random
 
 
-def dataset_generator(csv_path, shuffle=True, train_ratio=0.8, val_ratio=0.1):
+def dataset_generator(csv_path, sys_role, shuffle=True, train_ratio=0.9, val_ratio=0.05):
     
-    sys_role="You are BSMPD, created by UTN Boys.\
-     You are a helpful assistant for the students who \
-     want to learn about UTN's master coursers."
     train_list = []
     val_list = []
     test_list = []
@@ -32,8 +30,7 @@ def dataset_generator(csv_path, shuffle=True, train_ratio=0.8, val_ratio=0.1):
         lines = f.readlines()[1:]
 
     if shuffle:
-        # todo shuffle the list of lines
-        pass
+        random.shuffle(lines)
 
     # train data
     train_size = int(len(lines) * train_ratio)

@@ -16,6 +16,7 @@ class UTNChatBot():
 
     def _create_model(self):
         if os.path.exists(self.config.checkpoint):
+            print("Loading model from checkpoint")
             model_path = self.config.checkpoint
         else:
             model_path = self.config.model_name

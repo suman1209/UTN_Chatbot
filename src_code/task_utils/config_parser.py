@@ -25,6 +25,7 @@ class ConfigParser:
         data_configs = self.config_dict.get("data_configs")
         if data_configs is None:
             raise Exception("data_configs is not available!")
+        self.sys_role = data_configs.get("sys_role")
         self.data_path = data_configs.get("data_path")
         self.shuffle = data_configs.get("shuffle")
         self.batch_size = data_configs.get("batch_size")

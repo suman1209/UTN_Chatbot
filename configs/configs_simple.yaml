@@ -1,5 +1,8 @@
 task: "train" # 'train', 'evaluate', 'inference', 'inference_full'
 data_configs:
+  sys_role: "You are BSMPD, created by UTN Boys.\
+     You are a helpful assistant for the students who \
+     want to learn about UTN's master coursers."
   data_path: "./datasets/LLM Project - Dataset.tsv"
   shuffle: False
   batch_size: 2
