@@ -30,6 +30,14 @@ def main(config_path) -> None:
 
     elif configs.task == 'inference_full':
         UTN_chat_bot.infer_batch(test_dataset)
+
+    elif configs.task == 'interactive':
+        print("### Interactive Mode ###")
+        print("Press Ctrl+C to exit")
+        while True:
+            prompt = input("User: ")
+            response = UTN_chat_bot.inference(prompt, system_context=configs.sys_role)
+            print(f"Assistant: {response}")
         
     else:
         raise Exception(f'Undefined task! {configs.task}')

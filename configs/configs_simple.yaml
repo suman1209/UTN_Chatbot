@@ -1,4 +1,4 @@
-task: "inference_full" # 'train', 'evaluate', 'inference', 'inference_full'
+task: "interactive" # 'train', 'evaluate', 'inference', 'inference_full', 'interactive'
 data_configs:
   sys_role: "You are BSMPD, created by UTN Boys.\
      You are a helpful assistant for the students who \
