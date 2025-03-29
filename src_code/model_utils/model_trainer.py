@@ -1,6 +1,7 @@
 import torch
 import os
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
+from sentence_transformers import SentenceTransformer
 from trl import SFTTrainer
 import csv
 import evaluate
@@ -127,8 +128,10 @@ class UTNChatBot():
         print(f"CSV file has been written successfully to {self.config.output_dir}/output.csv.")
 
     def evaluate(self, dataset):
+        sentence_transformer_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2', cache_folder=self.config.cache_dir)
         bleu_metric = evaluate.load("bleu")
         rouge_metric = evaluate.load("rouge")
+        meteor_metric = evaluate.load('meteor')
         refs = []
         responses = []
         for i in range(len(dataset['test'])):
@@ -146,7 +149,17 @@ class UTNChatBot():
         # Calculate ROUGE score
         rouge_score = rouge_metric.compute(predictions=responses, references=refs)
         print(f"ROUGE Score: {rouge_score}")
-        results = {"BLEU": bleu_score, "ROUGE": rouge_score}
+        # Calculate METEOR score
+        meteor_score = meteor_metric.compute(predictions=responses, references=refs)
+        print(f"METEOR Score: {meteor_score}")
+        # Calculate Semantic Similarity
+        embeddings1 = sentence_transformer_model.encode(responses, convert_to_tensor=True)
+        embeddings2 = sentence_transformer_model.encode(refs, convert_to_tensor=True)
+        cosine_similarities = torch.nn.functional.cosine_similarity(embeddings1, embeddings2)
+        cosine_similarities = torch.mean(cosine_similarities)
+        print(f"Semantic Similarity: {cosine_similarities.item()}")
+
+        results = {"BLEU": bleu_score, "ROUGE": rouge_score, "METEOR": meteor_score, "Semantic Similarity": cosine_similarities.item()}
         with open(f"{self.config.output_dir}/../metrics_result/results.json", "w") as f:
             json.dump(results, f, indent=4)
         return results
