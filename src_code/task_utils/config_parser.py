@@ -25,9 +25,7 @@ class ConfigParser:
         data_configs = self.config_dict.get("data_configs")
         if data_configs is None:
             raise Exception("data_configs is not available!")
-        self.train_path = data_configs.get("train_path")
-        self.val_path = data_configs.get("train_path")
-        self.test_path = data_configs.get("train_path")
+        self.data_path = data_configs.get("data_path")
         self.shuffle = data_configs.get("shuffle")
         self.batch_size = data_configs.get("batch_size")
 
@@ -48,6 +46,7 @@ class ConfigParser:
         # training configs
         training_configs = self.config_dict.get("training_configs")
         self.output_dir = training_configs.get("output_dir")
+        self.plot = training_configs.get("plot")
         self.epochs = training_configs.get("epochs")
         self.per_device_train_batch_size = training_configs.get("per_device_train_batch_size")
         self.gradient_accumulation_steps = training_configs.get("gradient_accumulation_steps")

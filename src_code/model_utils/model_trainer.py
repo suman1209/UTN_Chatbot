@@ -1,6 +1,12 @@
 import torch
 import os
-from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
+from trl import SFTTrainer
+import csv
+import evaluate
+import json
+import matplotlib.pyplot as plt
+
 
 class UTNChatBot():
     def __init__(self, config):
@@ -54,27 +60,33 @@ class UTNChatBot():
             save_total_limit=self.config.save_total_limit,
             load_best_model_at_end=self.config.load_best_model_at_end,
             metric_for_best_model=self.config.metric_for_best_model,
+            logging_dir=os.path.join(self.config.output_dir, "../logs"),
+            report_to="tensorboard"
         )
 
-    def train(self, train_dataset, eval_dataset):
+    def train(self, dataset, plot=True):
         self.model.train()
         self._set_fine_tuning_parameters()
         # Trainer API
-        self.trainer = Trainer(
+        self.trainer = SFTTrainer(
             model=self.model,
             args=self.training_args,
-            train_dataset=train_dataset,
-            eval_dataset=eval_dataset,
-            tokenizer=self.tokenizer,
+            train_dataset=dataset["train"],
+            eval_dataset=dataset["val"],
+            processing_class=self.tokenizer,
         )
 
         # Start training
         self.trainer.train()
-        self.trainer.save_model(self.config.output_dir)
+        self.trainer.save_model(os.path.join(self.config.output_dir, "checkpoint_final"))
 
-    def inference(self, prompt):
+        if plot:
+            log_history = self.trainer.state.log_history
+            self._plot_loss(log_history) 
+
+    def inference(self, prompt, system_context="You are Qwen, created by Alibaba Cloud. You are a helpful assistant."):
         messages = [
-            {"role": "system", "content": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant."},
+            {"role": "system", "content": system_context},
             {"role": "user", "content": prompt}
         ]
         text = self.tokenizer.apply_chat_template(
@@ -95,5 +107,73 @@ class UTNChatBot():
         response = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
         return response
     
+    def infer_batch(self, dataset):
+        # Data to be written to the CSV file
+        data = [
+            ["Prompt", "Response"]
+        ]
 
+        for i in range(len(dataset['test'])):
+            prompt = dataset['test'][i]['messages'][1]['content']
+            system_context = dataset['test'][i]['messages'][0]['content']
+            response = self.inference(prompt, system_context=system_context)
+            data.append([prompt, response])
+        # Open the CSV file in write mode
+        with open(f"{self.config.output_dir}/output.csv", mode="w", newline="") as file:
+            writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+            # Write the data to the CSV file
+            writer.writerows(data)
+        print("CSV file has been written successfully.")
 
+    def evaluate(self, dataset):
+        bleu_metric = evaluate.load("bleu")
+        rouge_metric = evaluate.load("rouge")
+        refs = []
+        responses = []
+        for i in range(len(dataset['test'])):
+            prompt = dataset['test'][i]['messages'][1]['content']
+            system_context = dataset['test'][i]['messages'][0]['content']
+            ground_truth = dataset['test'][i]['messages'][2]['content']
+            response = self.inference(prompt, system_context=system_context)
+            refs.append(ground_truth)
+            responses.append(response)
+
+        
+        # Calculate BLEU score
+        bleu_score = bleu_metric.compute(predictions=responses, references=refs)
+        print(f"BLEU Score: {bleu_score}")
+        # Calculate ROUGE score
+        rouge_score = rouge_metric.compute(predictions=responses, references=refs)
+        print(f"ROUGE Score: {rouge_score}")
+        results = {"BLEU": bleu_score, "ROUGE": rouge_score}
+        with open(f"{self.config.output_dir}/../metrics_result/results.json", "w") as f:
+            json.dump(results, f, indent=4)
+        return results
+
+    def _plot_loss(self, log_history):
+        train_steps = []
+        train_loss = []
+        eval_steps = []
+        eval_loss = []
+
+        for log in log_history:
+            if "loss" in log and "step" in log:
+                train_steps.append(log["step"])
+                train_loss.append(log["loss"])
+            if "eval_loss" in log and "step" in log:
+                eval_steps.append(log["step"])
+                eval_loss.append(log["eval_loss"])
+
+        plt.figure(figsize=(10, 5))
+        if train_loss:
+            plt.plot(train_steps, train_loss, label="Training Loss")
+        if eval_loss:
+            plt.plot(eval_steps, eval_loss, label="Evaluation Loss")
+        plt.xlabel("Steps")
+        plt.ylabel("Loss")
+        plt.title("Training & Evaluation Loss Over Time")
+        plt.legend()
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.config.output_dir, "../images", "loss_plot.png"))
+        plt.show()
