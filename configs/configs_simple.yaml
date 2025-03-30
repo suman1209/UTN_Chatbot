@@ -1,8 +1,10 @@
-task: "interactive" # 'train', 'evaluate', 'inference', 'inference_full', 'interactive'
+task: "train" # 'train', 'evaluate', 'inference', 'inference_full', 'interactive'
 data_configs:
-  sys_role: "You are BSMPD, created by UTN Boys.\
-     You are a helpful assistant for the students who \
-     want to learn about UTN's master coursers."
+  sys_role: "You are a helpful assistant working in a university called UTN(University of Technology Nuremberg), \
+             it is a new university and offers master courses, your job is to answer questions \
+             about the university, master's program, life in germany..\
+             You are a helpful assistant for the students who \
+             want to learn about UTN's master coursers and or PHD courses"
   data_path: "./datasets/LLM Project - UTN Site Data.tsv"
   shuffle: True
   batch_size: 2
