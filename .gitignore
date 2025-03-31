@@ -174,3 +174,6 @@ cache*
 datasets*
 *checkpoints*
 *logs*
+*.json
+*.yaml
+*.png

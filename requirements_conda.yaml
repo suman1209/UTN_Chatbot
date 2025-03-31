@@ -18,3 +18,4 @@ dependencies:
       - sentence_transformers
       - pandas
       - tqdm
+      - gdown

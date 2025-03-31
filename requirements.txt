@@ -13,3 +13,4 @@ tensorboard
 sentence_transformers
 pandas
 tqdm
+gdown

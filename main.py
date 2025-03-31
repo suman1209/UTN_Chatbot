@@ -45,10 +45,7 @@ def main(config_path) -> None:
         raise Exception(f'Undefined task! {configs.task}')
 
 if __name__ == "__main__":
-    config_path = None
-    if config_path is None:
-        if len(sys.argv) < 2:
-            print("Usage: python main.py <config_path>")
-            sys.exit(1)
+    config_path = "configs/configs_simple.yaml"
+    if len(sys.argv) >= 2:
         config_path = sys.argv[1]  # Read config path from command line
     main(config_path)

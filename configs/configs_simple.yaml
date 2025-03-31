@@ -1,4 +1,4 @@
-task: "train" # 'train', 'evaluate', 'inference', 'inference_full', 'interactive'
+task: "interactive" # 'train', 'evaluate', 'inference', 'inference_full', 'interactive'
 data_configs:
   sys_role: "You are a helpful assistant working in a university called UTN(University of Technology Nuremberg), \
              it is a new university and offers master courses, your job is to answer questions \
@@ -13,7 +13,7 @@ data_configs:
 model_configs:
   name: "Qwen/Qwen2.5-0.5B-Instruct"
   tokenizer_name: "Qwen/Qwen2.5-0.5B-Instruct"
-  checkpoint: './docs_and_results/checkpoints/checkpoint-6300'
+  checkpoint: './docs_and_results/checkpoints/checkpoint_final'
   save_checkpoint: False
   device: "cuda" # either "cpu" or "cuda"
   device_map: { "": 0 }
