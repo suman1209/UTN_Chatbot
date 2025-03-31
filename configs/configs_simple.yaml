@@ -13,7 +13,6 @@ model_configs:
   name: "Qwen/Qwen2.5-0.5B-Instruct"
   tokenizer_name: "Qwen/Qwen2.5-0.5B-Instruct"
   checkpoint: './docs_and_results/checkpoints/checkpoint-6300'
-  tokenizer_checkpoint: ''
   save_checkpoint: False
   device: "cuda" # either "cpu" or "cuda"
   device_map: { "": 0 }
@@ -41,7 +40,6 @@ training_configs:
   optim:
     name: adamw_torch
     lr: 0.001
-    momentum: 0.9
     weight_decay: 0.0005
     clip_grad: null
 

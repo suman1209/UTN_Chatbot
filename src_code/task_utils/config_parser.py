@@ -38,7 +38,6 @@ class ConfigParser:
         self.model_name = model_configs.get("name")
         self.tokenizer_name = model_configs.get("tokenizer_name")
         self.checkpoint = model_configs.get("checkpoint")
-        self.tokenizer_checkpoint = model_configs.get("tokenizer_checkpoint")
         self.save_checkpoint = model_configs.get("save_checkpoint", None)
         self.device = model_configs.get('device')
         self.device_map = model_configs.get('device_map')
@@ -67,7 +66,6 @@ class ConfigParser:
         optim_configs = training_configs.get("optim")
         self.optim = optim_configs.get("name")
         self.lr = optim_configs.get("lr")
-        self.momentum = optim_configs.get("momentum")
         self.weight_decay = optim_configs.get("weight_decay")
         self.clip_grad = optim_configs.get("clip_grad")
 
