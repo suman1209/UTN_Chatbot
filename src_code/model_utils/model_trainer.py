@@ -30,8 +30,8 @@ class UTNChatBot():
         self.model.config.use_cache = False
 
     def _create_tokenizer(self):
-        if os.path.exists(self.config.tokenizer_checkpoint):
-            tokenizer_path = self.config.tokenizer_checkpoint
+        if os.path.exists(self.config.checkpoint):
+            tokenizer_path = self.config.checkpoint
         else:
             tokenizer_path = self.config.tokenizer_name
         self.tokenizer = AutoTokenizer.from_pretrained(
