@@ -25,9 +25,11 @@ class ConfigParser:
         data_configs = self.config_dict.get("data_configs")
         if data_configs is None:
             raise Exception("data_configs is not available!")
+        self.sys_role = data_configs.get("sys_role")
         self.data_path = data_configs.get("data_path")
         self.shuffle = data_configs.get("shuffle")
         self.batch_size = data_configs.get("batch_size")
+        self.rephrase = data_configs.get("rephrase")
 
         # model configs
         model_configs = self.config_dict.get("model_configs")
@@ -37,7 +39,6 @@ class ConfigParser:
         self.model_name = model_configs.get("name")
         self.tokenizer_name = model_configs.get("tokenizer_name")
         self.checkpoint = model_configs.get("checkpoint")
-        self.tokenizer_checkpoint = model_configs.get("tokenizer_checkpoint")
         self.save_checkpoint = model_configs.get("save_checkpoint", None)
         self.device = model_configs.get('device')
         self.device_map = model_configs.get('device_map')
@@ -66,7 +67,6 @@ class ConfigParser:
         optim_configs = training_configs.get("optim")
         self.optim = optim_configs.get("name")
         self.lr = optim_configs.get("lr")
-        self.momentum = optim_configs.get("momentum")
         self.weight_decay = optim_configs.get("weight_decay")
         self.clip_grad = optim_configs.get("clip_grad")
 

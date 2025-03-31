@@ -9,7 +9,12 @@ def main(config_path) -> None:
     print(f"{configs.batch_size = }")
 
     print("### Creating Dataloaders ###")
-    final_dataset = dataset_generator(configs.data_path)
+    if configs.task == 'train':
+        final_dataset = dataset_generator(configs.data_path, configs.sys_role, shuffle=configs.shuffle, rephrase=configs.rephrase)
+    if configs.task == 'evaluate' or configs.task == 'inference_full':
+        test_dataset = dataset_generator("./datasets/LLM Project - Test_Questions.tsv", configs.sys_role, train_ratio=0, val_ratio=0, shuffle=False)
+    
+
     UTN_chat_bot = UTNChatBot(configs)
 
     
@@ -19,14 +24,22 @@ def main(config_path) -> None:
         UTN_chat_bot.train(final_dataset, configs.plot)
 
     elif configs.task == 'evaluate':
-        UTN_chat_bot.evaluate(final_dataset)
+        UTN_chat_bot.evaluate(test_dataset)
 
     elif configs.task == 'inference':
         responses = UTN_chat_bot.inference("Hello")
         print(f"{responses=}")
 
     elif configs.task == 'inference_full':
-        UTN_chat_bot.infer_batch(final_dataset)
+        UTN_chat_bot.infer_batch(test_dataset)
+
+    elif configs.task == 'interactive':
+        print("### Interactive Mode ###")
+        print("Press Ctrl+C to exit")
+        while True:
+            prompt = input("User: ")
+            response = UTN_chat_bot.inference(prompt, system_context=configs.sys_role)
+            print(f"Assistant: {response}")
         
     else:
         raise Exception(f'Undefined task! {configs.task}')

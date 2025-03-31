@@ -1,12 +1,13 @@
 from datasets import Dataset, DatasetDict
 from copy import deepcopy
+import random
+from transformers import pipeline
+
+random.seed(42)
 
 
-def dataset_generator(csv_path, shuffle=True, train_ratio=0.8, val_ratio=0.1):
+def dataset_generator(csv_path, sys_role, shuffle=True, train_ratio=0.8, val_ratio=0.1, rephrase=0):
     
-    sys_role="You are BSMPD, created by UTN Boys.\
-     You are a helpful assistant for the students who \
-     want to learn about UTN's master coursers."
     train_list = []
     val_list = []
     test_list = []
@@ -31,9 +32,25 @@ def dataset_generator(csv_path, shuffle=True, train_ratio=0.8, val_ratio=0.1):
     with open(csv_path, "r") as f:
         lines = f.readlines()[1:]
 
+    new_lines = []
+
+    if rephrase != 0:
+        paraphraser = pipeline("text2text-generation", model="t5-base")
+        for line in lines:
+            line = line.strip()
+            line = line.split("\t")
+            if len(line) < 2:
+                continue
+            user_prompt = line[0]
+            results = line[1]
+            paraphrases = paraphraser(user_prompt, max_length=60, num_return_sequences=rephrase, do_sample=True)
+            for p in paraphrases:
+                paraphrased = p['generated_text']
+                new_lines.append(f" \t{paraphrased}\t{results}")
+        lines.extend(new_lines)
+
     if shuffle:
-        # todo shuffle the list of lines
-        pass
+        random.shuffle(lines)
 
     # train data
     train_size = int(len(lines) * train_ratio)
