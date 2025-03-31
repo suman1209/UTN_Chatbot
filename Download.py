@@ -6,6 +6,7 @@ url = 'https://drive.google.com/uc?id=1MKAM4HThRaYwbrMbufXJdYjGEl7UQP8h'
 extract_to = 'docs_and_results/checkpoints/'
 output_zip = 'downloaded_file.zip'
 
+os.makedirs(os.path.expanduser("~/.cache/gdown"), exist_ok=True)
 gdown.download(url, output=output_zip, quiet=False)
 
 os.makedirs(extract_to, exist_ok=True)
