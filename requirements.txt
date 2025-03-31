@@ -11,3 +11,5 @@ rouge_score
 matplotlib
 tensorboard
 sentence_transformers
+pandas
+tqdm

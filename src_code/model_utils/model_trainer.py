@@ -7,7 +7,7 @@ import csv
 import evaluate
 import json
 import matplotlib.pyplot as plt
-
+from tqdm import tqdm
 
 class UTNChatBot():
     def __init__(self, config):
@@ -109,25 +109,42 @@ class UTNChatBot():
         response = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
         return response
     
-    def infer_batch(self, dataset):
+    def infer_batch(self, dataset, result_path=None):
         # Data to be written to the CSV file
         data = [
-            ["Prompt", "Response"]
+            ['Prompt', 'ground_truth', 'response', 'bleu_score', 'rouge_score', 'cosine_similarities']
         ]
-
-        for i in range(len(dataset['test'])):
+        sentence_transformer_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2', cache_folder=self.config.cache_dir)
+        bleu_metric = evaluate.load("bleu")
+        rouge_metric = evaluate.load("rouge")
+        meteor_metric = evaluate.load('meteor')
+        for i in tqdm(range(len(dataset['test']))):
             prompt = dataset['test'][i]['messages'][1]['content']
             system_context = dataset['test'][i]['messages'][0]['content']
             response = self.inference(prompt, system_context=system_context)
-            data.append([prompt, response])
+            ground_truth = dataset['test'][i]['messages'][2]['content']
+            # Calculate BLEU score
+            bleu_score = bleu_metric.compute(predictions=[response], references=[ground_truth])
+            # Calculate ROUGE score
+            rouge_score = rouge_metric.compute(predictions=[response], references=[ground_truth])
+            # Calculate METEOR score
+            meteor_score = meteor_metric.compute(predictions=[response], references=[ground_truth])
+            # Calculate Semantic Similarity
+            embeddings1 = sentence_transformer_model.encode([response], convert_to_tensor=True)
+            embeddings2 = sentence_transformer_model.encode([ground_truth], convert_to_tensor=True)
+            cosine_similarities = torch.nn.functional.cosine_similarity(embeddings1, embeddings2)
+            cosine_similarities = torch.mean(cosine_similarities)
+            data.append([prompt, ground_truth, response, bleu_score, rouge_score, cosine_similarities.item()])
         # Open the CSV file in write mode
-        with open(f"{self.config.output_dir}/output.csv", mode="w", newline="") as file:
+        if result_path is None:
+            result_path = f"{self.config.output_dir}/../metrics_result/results.csv"
+        with open(f"{result_path}", mode="w", newline="") as file:
             writer = csv.writer(file, quoting=csv.QUOTE_ALL)
             # Write the data to the CSV file
             writer.writerows(data)
         print(f"CSV file has been written successfully to {self.config.output_dir}/output.csv.")
 
-    def evaluate(self, dataset):
+    def evaluate(self, dataset, result_path=None):
         sentence_transformer_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2', cache_folder=self.config.cache_dir)
         bleu_metric = evaluate.load("bleu")
         rouge_metric = evaluate.load("rouge")
@@ -141,7 +158,6 @@ class UTNChatBot():
             response = self.inference(prompt, system_context=system_context)
             refs.append(ground_truth)
             responses.append(response)
-
         
         # Calculate BLEU score
         bleu_score = bleu_metric.compute(predictions=responses, references=refs)
@@ -160,7 +176,9 @@ class UTNChatBot():
         print(f"Semantic Similarity: {cosine_similarities.item()}")
 
         results = {"BLEU": bleu_score, "ROUGE": rouge_score, "METEOR": meteor_score, "Semantic Similarity": cosine_similarities.item()}
-        with open(f"{self.config.output_dir}/../metrics_result/results.json", "w") as f:
+        if result_path is None:
+            result_path = f"{self.config.output_dir}/../metrics_result/results.json"
+        with open(f"{result_path}", "w") as f:
             json.dump(results, f, indent=4)
         return results
 
