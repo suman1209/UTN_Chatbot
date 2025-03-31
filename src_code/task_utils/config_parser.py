@@ -29,6 +29,7 @@ class ConfigParser:
         self.data_path = data_configs.get("data_path")
         self.shuffle = data_configs.get("shuffle")
         self.batch_size = data_configs.get("batch_size")
+        self.rephrase = data_configs.get("rephrase")
 
         # model configs
         model_configs = self.config_dict.get("model_configs")

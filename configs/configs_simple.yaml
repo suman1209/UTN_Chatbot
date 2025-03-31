@@ -8,6 +8,7 @@ data_configs:
   data_path: "./datasets/LLM Project - UTN Site Data.tsv"
   shuffle: True
   batch_size: 2
+  rephrase: 0
 
 model_configs:
   name: "Qwen/Qwen2.5-0.5B-Instruct"
