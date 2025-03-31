@@ -8,7 +8,7 @@ pip install -r requirements.txt
 ```
 
 ## run main file
-choose the task from "./configs/configs_simple.yaml" and run the following
+choose the task from [config_file](./configs/configs_simple.yaml) and run the following
 
 ```python
 python3 main.py configs/configs_simple.yaml
