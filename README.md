@@ -12,7 +12,7 @@ pip install -r requirements.txt
 This will save the model check points to  `./docs_and_results/checkpoints/`
 
 ```
-python3 Dwonload.py
+python3 dwonload.py
 ```
 
 ## Run main file

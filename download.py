@@ -2,7 +2,7 @@ import gdown
 import os
 import zipfile
 
-url = 'https://drive.google.com/uc?id=1MKAM4HThRaYwbrMbufXJdYjGEl7UQP8h'
+url = 'https://drive.google.com/uc?id=16pe2VphW7n2gZXrCBjDXfUL1AbjOm2rw'
 extract_to = 'docs_and_results/checkpoints/'
 output_zip = 'downloaded_file.zip'
 

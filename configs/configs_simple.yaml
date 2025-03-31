@@ -22,8 +22,8 @@ model_configs:
 training_configs:
   output_dir: ./docs_and_results/checkpoints
   plot: True
-  epochs: 10000
-  per_device_train_batch_size: 2
+  epochs: 30
+  per_device_train_batch_size: 4
   gradient_accumulation_steps: 4
   logging_steps: 0.01 # Log every X updates steps
   logging_strategy: steps
@@ -40,7 +40,7 @@ training_configs:
   metric_for_best_model: eval_loss
   optim:
     name: adamw_torch
-    lr: 0.001
+    lr: 0.00001
     weight_decay: 0.0005
     clip_grad: null
 
