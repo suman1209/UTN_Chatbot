@@ -3,6 +3,7 @@ An LLM for answering UTN academics related question
 
 ## Environment Setting
 
+We developed the code on Python 3.10.12
 ```
 pip install -r requirements.txt
 ```
