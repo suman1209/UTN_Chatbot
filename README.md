@@ -1,5 +1,5 @@
 # UTN_Chatbot
-An LLM for answering UTN academics related question
+An LLM for answering UTN academics related question developed as part of the Large Language Model Course (WS 2024) at the University of Technology Nuremberg.
 
 ## Environment Setting
 
